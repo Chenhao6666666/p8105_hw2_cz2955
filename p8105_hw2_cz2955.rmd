@@ -159,12 +159,16 @@ znyc<-read_csv("Zip_NYC.csv")|>
     names_to = "Date",
     values_to = "RentPrice"
   )
+
+
+
+
 z_together <- znyc |>
   left_join(zcodes, by = c("ZipCode", "County"))
   
 ```
 
-There are a total of `r nrow(z_together)` observations, comprising `r n_distinct(z_together$ZipCode)` distinct zipcodes and `r n_distinct(z_together$Neighborhood)` different neighbourhoods.
+There are a total of `r nrow(z_together)` observations, comprising `r n_distinct(z_together$ZipCode)` distinct zipcodes and `r n_distinct(z_together$Neighborhood)` different neighbourhoods (include an "NA").
 
 The ZIP codes appear in the ZIP code dataset but not in the Zillow Rental Price dataset is `r paste(setdiff(zcodes$ZipCode, znyc$ZipCode), collapse = ", ")`. For instance, the Bronx zip codes 10464 and 10474 are primarily warehousing, industrial or port areas with no residential rental properties, hence Zillow has no data for them.
 
