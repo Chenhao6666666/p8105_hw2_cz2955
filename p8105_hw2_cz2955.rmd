@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 month_names <- c("Jan","Feb","Mar","Apr","May","Jun",
                    "Jul","Aug","Sep","Oct","Nov","Dec")
 # clean pols_df
-pols_df<-read_csv("../data/pols-month.csv")|>
+pols_df<-read_csv("pols-month.csv")|>
   separate(mon, into = c("year", "month", "day"), sep = "-", convert = TRUE)|> # convert: transfer"05"to"5"
   mutate(month = month_names[month])|>
   mutate(president=case_match(
@@ -32,7 +32,7 @@ pols_df<-read_csv("../data/pols-month.csv")|>
   select(-prez_dem,-prez_gop)
 
 # clean unemployment_df
-unemployment_df<-read_csv("../data/unemployment.csv")|>
+unemployment_df<-read_csv("unemployment.csv")|>
   pivot_longer(
     Jan:Dec,
     names_to = "month",   # new column name 1st
@@ -42,7 +42,7 @@ unemployment_df<-read_csv("../data/unemployment.csv")|>
   arrange(year, month)
 
 # clean snp_df
-snp_df<-read_csv("../data/snp.csv")|>
+snp_df<-read_csv("snp.csv")|>
   separate(date, into = c("month", "day", "year"), sep = "/", convert = TRUE) |>
   mutate(year=year+2000,month = month_names[month])|>
   arrange(year,month)|>
@@ -61,7 +61,7 @@ Ans: The pols dataset contained monthly counts of national politicians by party 
 
 ```{r}
 # Trash_wheel
-trash_df<-readxl::read_excel("../data/Trash-Wheel.xlsx")|>
+trash_df<-readxl::read_excel("Trash-Wheel.xlsx")|>
   select(where(~!all(is.na(.))))|>
   rename(
     Dumpster = Dumpster,
@@ -85,7 +85,7 @@ trash_df<-readxl::read_excel("../data/Trash-Wheel.xlsx")|>
   mutate(Year = as.integer(Year))
 
 # Professor Trash Wheel
-professor_df <- read_excel("../data/Trash-Wheel.xlsx", sheet = 2)|>
+professor_df <- read_excel("Trash-Wheel.xlsx", sheet = 2)|>
     select(where(~!all(is.na(.))))|>
   filter(!if_all(everything(), ~ is.na(.)))|>
   filter(!(if_all(-1, is.na)))|>
@@ -107,7 +107,7 @@ professor_df <- read_excel("../data/Trash-Wheel.xlsx", sheet = 2)|>
   filter(!is.na(Dumpster))
 
 # Gwynnda
-gwynnda_df <- read_excel("../data/Trash-Wheel.xlsx", sheet = 4)|>
+gwynnda_df <- read_excel("Trash-Wheel.xlsx", sheet = 4)|>
     select(where(~!all(is.na(.))))|>
   filter(!if_all(everything(), ~ is.na(.)))|>
     rename(
@@ -136,7 +136,7 @@ According to the data, Professor Trash Wheel has collected `r sum(professor_df$W
 ## Problem 3
 
 ```{r}
-zcodes<-read_csv("../data/Zip_Codes.csv")|>
+zcodes<-read_csv("Zip_Codes.csv")|>
     select(County, ZipCode, Neighborhood) |>
   mutate(
     ZipCode = as.integer(ZipCode),
@@ -145,7 +145,7 @@ zcodes<-read_csv("../data/Zip_Codes.csv")|>
     )
   
 
-znyc<-read_csv("../data/Zip_NYC.csv")|>
+znyc<-read_csv("Zip_NYC.csv")|>
   rename(ZipCode = RegionName,
          County = CountyName
          ) |>
@@ -159,10 +159,6 @@ znyc<-read_csv("../data/Zip_NYC.csv")|>
     names_to = "Date",
     values_to = "RentPrice"
   )
-
-
-
-
 z_together <- znyc |>
   left_join(zcodes, by = c("ZipCode", "County"))
   
